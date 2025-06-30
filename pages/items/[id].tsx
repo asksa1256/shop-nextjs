@@ -9,7 +9,6 @@ interface Product {
   imgUrl: string;
 }
 
-// product/[param].js
 export default function Product() {
   const [product, setProduct] = useState<Product>();
   const [sizeReviews, setSizeReviews] = useState([]);
