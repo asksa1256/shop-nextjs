@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import styles from './Header.module.css';
-import Container from './Container';
+import Link from "next/link";
+import styles from "./Header.module.css";
+import Container from "./Container";
 
 export default function Header() {
   return (
@@ -9,7 +9,7 @@ export default function Header() {
         <Link className={styles.logo} href="/">
           codietmall
         </Link>
-        <Link className={styles.setting} href="/setting">
+        <Link className={styles.setting} href="/settings">
           설정
         </Link>
       </Container>

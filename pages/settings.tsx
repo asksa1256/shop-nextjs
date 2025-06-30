@@ -1,9 +1,26 @@
-import React from "react";
+import Dropdown from "@/components/Dropdown";
+import { useTheme } from "@/contexts/ThemeContext";
+import styles from "@/styles/Settings.module.css";
 
 export default function Settings() {
+  const { theme, setTheme } = useTheme();
+
   return (
-    <section>
-      <h2>설정 페이지</h2>
-    </section>
+    <div>
+      <h1 className={styles.title}>설정</h1>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>테마 설정</h2>
+        <Dropdown
+          className={styles.input}
+          name="theme"
+          value={theme}
+          onChange={(name, value) => setTheme(value)}
+          options={[
+            { label: "라이트", value: "light" },
+            { label: "다크", value: "dark" },
+          ]}
+        />
+      </section>
+    </div>
   );
 }
