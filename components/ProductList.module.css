@@ -18,3 +18,11 @@
   font-size: 20px;
   font-weight: 800;
 }
+
+.image {
+  position: relative;
+  border-radius: 10px;
+  width: 300px;
+  height: 300px;
+  aspect-ratio: 1/1;
+}

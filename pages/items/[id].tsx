@@ -3,6 +3,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import axios from "@/lib/axios";
 import SizeReviewList from "@/components/SizeReviewList";
+import styles from "@/styles/Product.module.css";
 
 interface Product {
   name: string;
@@ -39,12 +40,9 @@ export default function Product() {
     <section>
       <div className="product">
         <h2>{product.name}</h2>
-        <Image
-          src={product.imgUrl}
-          alt={product.name}
-          width={400}
-          height={400}
-        />
+        <div className={styles.image}>
+          <Image src={product.imgUrl} alt={product.name} fill />
+        </div>
       </div>
       <div className="size-review">
         <SizeReviewList sizeReviews={sizeReviews} />
