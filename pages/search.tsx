@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import SearchForm from "@/components/SearchForm";
 import ProductList from "@/components/ProductList";
 import axios from "@/lib/axios";
+import Head from "next/head";
 
 export default function Search() {
   const [products, setProducts] = useState();
@@ -21,6 +22,9 @@ export default function Search() {
 
   return (
     <section>
+      <Head>
+        <title>{q} 검색 결과 - Codeitmall</title>
+      </Head>
       <h2>검색 페이지</h2>
       <SearchForm initialValue={typeof q === "string" ? q : ""} />
       <h3>{q} 검색 결과</h3>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styles from "@/styles/Home.module.css";
-import Link from "next/link";
 import SearchForm from "@/components/SearchForm";
 import ProductList from "@/components/ProductList";
 import axios from "@/lib/axios";
+import Head from "next/head";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -20,6 +19,9 @@ export default function Home() {
 
   return (
     <div>
+      <Head>
+        <title>Codeitmall</title>
+      </Head>
       <h1>코드잇몰</h1>
       <SearchForm initialValue="" />
       <ProductList products={products} />
