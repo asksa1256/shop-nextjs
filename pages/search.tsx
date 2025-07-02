@@ -9,7 +9,7 @@ export default function Search() {
   const router = useRouter();
   const { q } = router.query;
 
-  async function getProducts(query) {
+  async function getProducts(query: string | string[]) {
     const res = await axios.get(`/products?q=${query}`);
     const nextProducts = res.data.results;
     setProducts(nextProducts);
