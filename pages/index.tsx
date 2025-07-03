@@ -4,19 +4,19 @@ import ProductList from "@/components/ProductList";
 import axios from "@/lib/axios";
 import Head from "next/head";
 
-export default function Home() {
-  const [products, setProducts] = useState([]);
+// 정적 생성 (SSG)
+export const getStaticProps = async () => {
+  const res = await axios.get("/products");
+  const products = res.data.results;
 
-  async function getProducts() {
-    const res = await axios.get(`/products`);
-    const nextProducts = res.data.results;
-    setProducts(nextProducts);
-  }
+  return {
+    props: {
+      products,
+    },
+  };
+};
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
+export default function Home({ products }) {
   return (
     <div>
       <Head>

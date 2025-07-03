@@ -4,3 +4,8 @@
   width: 100%;
   aspect-ratio: 1/1;
 }
+
+.loading {
+  margin: 60px;
+  text-align: center;
+}
