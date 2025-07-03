@@ -11,20 +11,7 @@ interface Product {
   imgUrl: string;
 }
 
-export const getStaticPaths = async () => {
-  const res = await axios.get("/products/");
-  const products = res.data.results;
-  const paths = products.map((product: { id: string }) => ({
-    params: { id: String(product.id) },
-  }));
-
-  return {
-    paths,
-    fallback: true, // true: 여기서 설정해놓지 않은 페이지도 정적 생성
-  };
-};
-
-export const getStaticProps = async (context) => {
+export const getServerSideProps = async (context) => {
   const productId = context.params["id"]; // useRouter 훅을 쓸 수 없는 대신 getStaticProps에서 제공하는 파라미터 'context'에서 params 값을 받아와 사용
   let product: Product;
 
@@ -37,15 +24,13 @@ export const getStaticProps = async (context) => {
     };
   }
 
-  // const sizeReviewsRes = await axios.get(
-  //   `/size_reviews?product_id=${productId}`
-  // );
-  // const sizeReviews = sizeReviewsRes.data.results ?? [];
+  const res = await axios.get(`/size_reviews?product_id=${productId}`);
+  const sizeReviews = res.data.results ?? [];
 
   return {
     props: {
       product,
-      // sizeReviews,
+      sizeReviews,
     },
   };
 };
@@ -67,7 +52,7 @@ export default function Product({ product, sizeReviews }) {
         </div>
       </div>
       <div className="size-review">
-        {/* <SizeReviewList sizeReviews={sizeReviews} /> */}
+        <SizeReviewList sizeReviews={sizeReviews ?? []} />
       </div>
     </section>
   );
