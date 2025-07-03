@@ -1,10 +1,12 @@
-import React from "react";
+import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import axios from "@/lib/axios";
 import SizeReviewList from "@/components/SizeReviewList";
 import styles from "@/styles/Product.module.css";
-import Spinner from "./../../components/Spinner";
-
+import Spinner from "@/components/Spinner";
+import Dropdown from "@/components/Dropdown";
+import Input from "@/components/Input";
+import Button from "@/components/Button";
 interface Product {
   id: string;
   name: string;
@@ -35,7 +37,39 @@ export const getServerSideProps = async (context) => {
   };
 };
 
-export default function Product({ product, sizeReviews }) {
+export default function Product({ product, sizeReviews: initialSizeReviews }) {
+  const [sizeReviews, setSizeReviews] = useState(initialSizeReviews);
+  const [formValue, setFormValue] = useState({
+    size: "M",
+    sex: "male",
+    height: 173,
+    fit: "good",
+  });
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const sizeReview = {
+      ...formValue,
+      productId: product.id,
+    };
+
+    const res = await axios.post("/size_reviews/", sizeReview);
+    const newSizeReview = res.data;
+    setSizeReviews((prev) => [newSizeReview, ...prev]);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    handleChange(name, value);
+  };
+
+  const handleChange = (name, value) => {
+    setFormValue({
+      ...formValue,
+      [name]: value,
+    });
+  };
+
   if (!product)
     return (
       <div className={styles.loading}>
@@ -51,9 +85,72 @@ export default function Product({ product, sizeReviews }) {
           <Image src={product.imgUrl} alt={product.name} fill />
         </div>
       </div>
-      <div className="size-review">
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>사이즈 추천</h2>
         <SizeReviewList sizeReviews={sizeReviews ?? []} />
-      </div>
+      </section>
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>사이즈 추천하기</h2>
+        <form className={styles.sizeForm} onSubmit={handleSubmit}>
+          <label className={styles.label}>
+            사이즈
+            <Dropdown
+              className={styles.input}
+              name="size"
+              value={formValue.size}
+              options={[
+                { label: "S", value: "S" },
+                { label: "M", value: "M" },
+                { label: "L", value: "L" },
+                { label: "XL", value: "XL" },
+              ]}
+              onChange={handleChange}
+            />
+          </label>
+          <label className={styles.label}>
+            성별
+            <Dropdown
+              className={styles.input}
+              name="sex"
+              value={formValue.sex}
+              onChange={handleChange}
+              options={[
+                { label: "남성", value: "male" },
+                { label: "여성", value: "female" },
+              ]}
+            />
+          </label>
+          <label className={styles.label}>
+            키
+            <Input
+              className={styles.input}
+              name="height"
+              min="50"
+              max="200"
+              type="number"
+              value={formValue.height}
+              onChange={handleInputChange}
+            />
+          </label>
+          <label className={styles.label}>
+            사이즈 추천
+            <Dropdown
+              className={styles.input}
+              name="fit"
+              value={formValue.fit}
+              options={[
+                { label: "작음", value: "small" },
+                { label: "적당함", value: "good" },
+                { label: "큼", value: "big" },
+              ]}
+              onChange={handleChange}
+            />
+          </label>
+          <Button className={styles.submit} as={undefined}>
+            작성하기
+          </Button>
+        </form>
+      </section>
     </section>
   );
 }
